@@ -2,6 +2,7 @@ import Server from './class/server';
 import userRoutes from './routes/usuarios';
 import connection from './bin/conectionMySql';
 import mongoose from 'mongoose';
+import bodyPaser from 'body-parser';
 
 
 
@@ -11,6 +12,10 @@ const server = new Server();
 server.start(()=>{
     console.log(`Servidor corriendo en puerto ${server.puerto} y en host ${server.host}`);
 });
+
+// body parser
+server.app.use(bodyPaser.urlencoded({extended:true}));
+server.app.use(bodyPaser.json());
 
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
@@ -26,7 +31,6 @@ connection.connect((error)=>{
 })
 
 // Conexion moongosee
-
 mongoose.connect('mongodb://localhost:27017/appCurso_mar_vie',
                     {useNewUrlParser:true, useCreateIndex:true},
                     (error)=>{
