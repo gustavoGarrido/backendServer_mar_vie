@@ -80,11 +80,27 @@ userRoutes.post('/create', (req:Request, res:Response)=>{
 
 userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
    
-    const user = {
-        nombre: req.body.nombre,
-        email: req.body.email,
-        avatar: req.body.avatar
-    }
+    // const user = {
+    //     nombre: req.body.nombre,
+    //     email: req.body.email,
+    //     avatar: req.body.avatar,
+    //     password: bcrypt.hashSync(req.body.password, 10)
+    // }
+
+    let user:any = {};
+    const atributos = ["nombre", "email", "avatar", "password"];
+
+    atributos.forEach(item=>{
+        if(req.body[item] != null){
+            if(item == 'password'){
+                user[item] = bcrypt.hashSync(req.body[item], 10)
+            }
+            else{
+                user[item] = req.body[item]
+            }
+        }
+    });
+
 
     Usuario.findByIdAndUpdate(req.usuario.id, user,{new:true},(error, result)=>{
         if(error){
@@ -104,8 +120,6 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
             })
 
         }
-
-
     })
    
 })
