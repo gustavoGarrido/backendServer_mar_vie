@@ -1,6 +1,8 @@
 import {Router, Response, Request} from 'express';
 import Usuario from '../models/usuarios.model';
 import bcrypt from 'bcrypt';
+import {Token} from '../class/token';
+import { verificarToken } from '../middlewares/authentication';
 
 
 
@@ -10,10 +12,12 @@ const userRoutes = Router();
 
 userRoutes.post('/login', (req:Request, res:Response)=>{
 
+
     Usuario.findOne({email: req.body.email} ,null, null, (error, result)=>{
         if(error){
             throw error
         }
+
         if(!result){
             return res.json({
                 estado: "success",
@@ -23,11 +27,19 @@ userRoutes.post('/login', (req:Request, res:Response)=>{
         }
 
         if(result.compararPassword(req.body.password)){
+
+            const tokenJwt = Token.getToken({
+                id: result.id,
+                nombre: result.nombre,
+                email: result.email,
+                avatar: result.avatar
+            })
+
             return res.json({
                 estado:"success",
                 mensaje: "usuario encontrado",
                 data: result,
-                token: "daksduiyauidhl45274574564f65sdfd"
+                token: tokenJwt
             })
         }
         else{
@@ -64,6 +76,38 @@ userRoutes.post('/create', (req:Request, res:Response)=>{
             })
         })
 
+})
+
+userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
+   
+    const user = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        avatar: req.body.avatar
+    }
+
+    Usuario.findByIdAndUpdate(req.usuario.id, user,{new:true},(error, result)=>{
+        if(error){
+            throw error
+        }
+        if(!result){
+            res.json({
+                estado: "success",
+                mensaje: "usuario no existe en la base"
+            })
+        }
+
+        if(result){
+            res.json({
+                estado: "success",
+                data: result,
+            })
+
+        }
+
+
+    })
+   
 })
 
 
