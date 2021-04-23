@@ -3,6 +3,7 @@ import Usuario from '../models/usuarios.model';
 import bcrypt from 'bcrypt';
 import {Token} from '../class/token';
 import { verificarToken } from '../middlewares/authentication';
+import jwt from 'jsonwebtoken';
 
 
 
@@ -29,7 +30,7 @@ userRoutes.post('/login', (req:Request, res:Response)=>{
         if(result.compararPassword(req.body.password)){
 
             const tokenJwt = Token.getToken({
-                id: result.id,
+                _id: result.id,
                 nombre: result.nombre,
                 email: result.email,
                 avatar: result.avatar
@@ -86,6 +87,9 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
     //     avatar: req.body.avatar,
     //     password: bcrypt.hashSync(req.body.password, 10)
     // }
+    console.log("token",req.token)
+
+    // console.log(req.usuario)
 
     let user:any = {};
     const atributos = ["nombre", "email", "avatar", "password"];
@@ -102,7 +106,7 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
     });
 
 
-    Usuario.findByIdAndUpdate(req.usuario.id, user,{new:true},(error, result)=>{
+    Usuario.findByIdAndUpdate(req.usuario._id, user,{new:true},(error, result)=>{     
         if(error){
             throw error
         }
@@ -114,15 +118,18 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
         }
 
         if(result){
+
             res.json({
                 estado: "success",
                 data: result,
+                refreshToken: req.token
             })
 
         }
     })
    
 })
+
 
 
 export default userRoutes;
