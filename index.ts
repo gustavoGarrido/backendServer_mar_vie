@@ -3,6 +3,9 @@ import userRoutes from './routes/usuarios';
 import connection from './bin/conectionMySql';
 import mongoose from 'mongoose';
 import bodyPaser from 'body-parser';
+import postRouter from './routes/post';
+import fileUpload from 'express-fileupload';
+
 
 
 
@@ -17,8 +20,13 @@ server.start(()=>{
 server.app.use(bodyPaser.urlencoded({extended:true}));
 server.app.use(bodyPaser.json());
 
+//fileUpload
+server.app.use(fileUpload());
+
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
+server.app.use('/post', postRouter);
+
 
 //Conexión dataBase MySQL
 connection.connect((error)=>{
