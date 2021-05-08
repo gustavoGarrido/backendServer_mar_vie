@@ -22,6 +22,7 @@ server.app.use(bodyPaser.json());
 
 //fileUpload
 server.app.use(fileUpload());
+// server.app.use(fileUpload({useTempFiles:true}));
 
 //Rutas aplicacion
 server.app.use('/users', userRoutes);

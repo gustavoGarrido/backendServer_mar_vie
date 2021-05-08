@@ -2,8 +2,9 @@ import { Router , Response } from 'express';
 import { verificarToken } from '../middlewares/authentication';
 import { Post } from '../models/post.models';
 import { IfileUpload } from '../interfaces/file-upload';
+import FileSystem from '../class/file-system';
 
-
+const fileSystem = new FileSystem();
 const postRouter = Router();
 
 postRouter.get('/', async (req:any, res:Response)=>{
@@ -31,8 +32,13 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
     const body = req.body;
     body.usuario = req.usuario._id
 
-    //Primero crear el metodo create
-    //Luego implementar el metodo populate
+    const imagenes = fileSystem.imagenesDeTempHaciaPost(req.usuario._id); //Se usa para la parte de confirmar la imagen en carpeta permanente
+    body.img = imagenes
+
+    
+
+    // Primero crear el metodo create
+    // Luego implementar el metodo populate
 
     Post.create(body)
         .then(async postDb=>{
@@ -51,7 +57,7 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
 
 })
 
-postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
+postRouter.post('/upload', verificarToken, async (req:any, res:Response)=>{
     
     if(!req.files){
         return res.status(400).json({
@@ -76,10 +82,25 @@ postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
         })
     }
 
+    // const fileSystem = new FileSystem();
+
+    await fileSystem.guardarImagenTemporar(imagen, req.usuario._id)
+
     res.json({
         estado: "success",
         data: imagen.mimetype
     })
+})
+
+postRouter.get('/imagen/:userId/:img', (req:any, res:Response)=>{
+
+    console.log("prueba")
+    const userId = req.params.userId;
+    const img = req.params.img;
+
+    const pathFoto = fileSystem.getFotoUrl(userId, img)
+
+    res.sendFile(pathFoto)
 })
 
 export default postRouter;
