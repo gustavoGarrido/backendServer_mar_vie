@@ -4,6 +4,7 @@ import connection from './bin/conectionMySql';
 import mongoose from 'mongoose';
 import bodyPaser from 'body-parser';
 import userSQLRoutes from './routes/userSQL';
+import postRouter from './routes/post';
 
 
 
@@ -21,6 +22,7 @@ server.app.use(bodyPaser.json());
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
 server.app.use('/userSQL', userSQLRoutes);
+server.app.use('/post', postRouter);
 
 //Conexión dataBase MySQL
 connection.connect((error)=>{
