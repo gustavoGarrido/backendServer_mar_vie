@@ -1,6 +1,7 @@
 import {Router, Response} from 'express';
 import { verificarToken } from '../middlewares/authentication';
 import { Post } from '../models/post.models';
+import { IfileUpload } from '../interfaces/file-upload';
 
 const postRouter = Router();
 
@@ -47,12 +48,28 @@ postRouter.get('/', async (req:any, res:Response)=>{
 
 postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
 
-    const imagen = req.files;
-    console.log(req.files)
+    const imag:IfileUpload = req.files.imag
 
+    if(!req.files){
+        return res.status(400).json({
+            estado:"error",
+            mensaje: "no se subio archivo"
+        })
+    }
+ 
+    const validacionTipoImagen = imag.mimetype.includes('image');
+
+    if(!validacionTipoImagen){
+        return res.status(400).json({
+            estado:"error",
+            mensaje: "formato incorrecto"
+        })
+    }
+
+   
     res.json({
         estado:"success",
-        data: imagen
+        data: imag
     })
 
 })

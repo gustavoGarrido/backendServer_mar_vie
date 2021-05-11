@@ -19,13 +19,13 @@ server.start(()=>{
 server.app.use(bodyPaser.urlencoded({extended:true}));
 server.app.use(bodyPaser.json());
 
+//upload
+server.app.use(fileUpload());
+
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
 server.app.use('/userSQL', userSQLRoutes);
 server.app.use('/post', postRouter);
-
-//upload
-server.app.use(fileUpload());
 
 //Conexión dataBase MySQL
 connection.connect((error)=>{
