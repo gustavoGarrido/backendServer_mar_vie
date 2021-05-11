@@ -45,4 +45,16 @@ postRouter.get('/', async (req:any, res:Response)=>{
 
 })
 
+postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
+
+    const imagen = req.files;
+    console.log(req.files)
+
+    res.json({
+        estado:"success",
+        data: imagen
+    })
+
+})
+
 export default postRouter;
