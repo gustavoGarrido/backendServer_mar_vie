@@ -2,7 +2,10 @@ import {Router, Response} from 'express';
 import { verificarToken } from '../middlewares/authentication';
 import { Post } from '../models/post.models';
 import { IfileUpload } from '../interfaces/file-upload';
+import FileSystem from '../class/file-system';
 
+
+const fileSystem = new FileSystem();
 const postRouter = Router();
 
 postRouter.post('/', verificarToken, (req:any, res:Response)=>{
@@ -46,7 +49,7 @@ postRouter.get('/', async (req:any, res:Response)=>{
 
 })
 
-postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
+postRouter.post('/upload', verificarToken, async (req:any, res:Response)=>{
 
     const imag:IfileUpload = req.files.imag
 
@@ -65,6 +68,8 @@ postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
             mensaje: "formato incorrecto"
         })
     }
+
+    await fileSystem.guardarImagenTemporal(req.usuario._id, imag)
 
    
     res.json({

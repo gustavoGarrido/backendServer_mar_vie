@@ -8,4 +8,6 @@ export interface IfileUpload {
     truncated: boolean,
     mimetype:string,
     md5:string
+
+    mv:Function
 }
