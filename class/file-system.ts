@@ -50,8 +50,14 @@ export default class FileSystem{
         })
     }
 
+    private obtenerImagenesTemp(userId:string):Array<string>{
 
-    imagenesDeTempHaciaPost(userId:string){
+        const pathTemp = path.resolve(__dirname, '../uploads', userId, "temp");
+        return fs.readdirSync(pathTemp);
+
+    }
+
+    imagenesDeTempHaciaPost(userId:string):Array<string>{
         const pathUserTemp = path.resolve(__dirname, '../uploads', userId, "temp");//De donde voy a mover la imagen -- origen
         const pathUserPost = path.resolve(__dirname, '../uploads', userId, "post")// Hacia donde lo voy a mover -- destino
 
@@ -63,7 +69,13 @@ export default class FileSystem{
             fs.mkdirSync(pathUserPost)
         }
 
+        const imagenesTemp:Array<string> = this.obtenerImagenesTemp(userId);
+
+        imagenesTemp.forEach(imagenes=>{
+            fs.renameSync(`${pathUserTemp}/${imagenes}` , `${pathUserPost}/${imagenes}`);
+        })
         
+        return imagenesTemp;
     }
 
 }
