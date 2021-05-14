@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import {Token} from '../class/token';
 import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
+import { Irequest } from '../interfaces/request';
 
 
 
@@ -128,6 +129,21 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
         }
     })
    
+})
+
+userRoutes.get('/', verificarToken , (req:any, res:Response)=>{
+    
+    let request: Irequest = req
+
+    const usuario = request.usuario;
+
+    console.log(req)
+
+    res.json({
+        estado:"success",
+        usuario: usuario,
+        // request: req
+    })
 })
 
 
