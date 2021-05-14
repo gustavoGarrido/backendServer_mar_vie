@@ -5,6 +5,7 @@ import {Token} from '../class/token';
 import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
 import { Irequest } from '../interfaces/request';
+import usuarios from '../controllers/usuarios';
 
 
 
@@ -131,20 +132,22 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
    
 })
 
-userRoutes.get('/', verificarToken , (req:any, res:Response)=>{
+// userRoutes.get('/', verificarToken , (req:any, res:Response)=>{
     
-    let request: Irequest = req
+//     let request: Irequest = req
 
-    const usuario = request.usuario;
+//     const usuario = request.usuario;
 
-    console.log(req)
+//     console.log(req)
 
-    res.json({
-        estado:"success",
-        usuario: usuario,
-        // request: req
-    })
-})
+//     res.json({
+//         estado:"success",
+//         usuario: usuario,
+//         // request: req
+//     })
+// })
+
+userRoutes.get('/', verificarToken , usuarios.token)
 
 
 
