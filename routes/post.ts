@@ -12,7 +12,7 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
     
     let body = req.body;
 
-    body.usuario = req.usuario._id;
+    body.usuario = req.usuario.id;
 
     Post.create(body)
         .then(async postDb=>{
@@ -35,7 +35,7 @@ postRouter.get('/', async (req:any, res:Response)=>{
     skip = skip*ctd;
     
     const post = await Post.find()
-                                .sort({_id:-1})
+                                .sort({id:-1})
                                 .skip(skip)
                                 .limit(ctd)
                                 .populate('usuario')
@@ -69,7 +69,7 @@ postRouter.post('/upload', verificarToken, async (req:any, res:Response)=>{
         })
     }
 
-    await fileSystem.guardarImagenTemporal(req.usuario._id, imag)
+    await fileSystem.guardarImagenTemporal(req.usuario.id, imag)
 
    
     res.json({
