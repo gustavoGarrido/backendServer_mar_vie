@@ -30,7 +30,7 @@ userRoutes.post('/login', (req:Request, res:Response)=>{
         if(result.compararPassword(req.body.password)){
 
             const tokenJwt = Token.getToken({
-                _id: result.id,
+                id: result.id,
                 nombre: result.nombre,
                 email: result.email,
                 avatar: result.avatar
@@ -106,7 +106,7 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
     });
 
 
-    Usuario.findByIdAndUpdate(req.usuario._id, user,{new:true},(error, result)=>{     
+    Usuario.findByIdAndUpdate(req.usuario.id, user,{new:true},(error, result)=>{     
         if(error){
             throw error
         }

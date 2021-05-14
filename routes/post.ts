@@ -14,7 +14,7 @@ postRouter.get('/', async (req:any, res:Response)=>{
     skip = skip * 10 //le decimos que comience a partir del registro skip ejemplo si skip es 20 nos va a devolver el registro 21
     
     const post = await Post.find()
-                                .sort({_id:-1}) //Ordena de forma descendente
+                                .sort({id:-1}) //Ordena de forma descendente
                                 .skip(skip) //Saltar pagina 
                                 .limit(10) // limitar a 10 registros por peticion
                                 .populate('usuario', '-password') //Agregar propiedades del objeto usuarios
@@ -30,9 +30,9 @@ postRouter.get('/', async (req:any, res:Response)=>{
 postRouter.post('/', verificarToken, (req:any, res:Response)=>{
 
     const body = req.body;
-    body.usuario = req.usuario._id
+    body.usuario = req.usuario.id
 
-    const imagenes = fileSystem.imagenesDeTempHaciaPost(req.usuario._id); //Se usa para la parte de confirmar la imagen en carpeta permanente
+    const imagenes = fileSystem.imagenesDeTempHaciaPost(req.usuario.id); //Se usa para la parte de confirmar la imagen en carpeta permanente
     body.img = imagenes
 
     
@@ -84,7 +84,7 @@ postRouter.post('/upload', verificarToken, async (req:any, res:Response)=>{
 
     // const fileSystem = new FileSystem();
 
-    await fileSystem.guardarImagenTemporar(imagen, req.usuario._id)
+    await fileSystem.guardarImagenTemporar(imagen, req.usuario.id)
 
     res.json({
         estado: "success",
