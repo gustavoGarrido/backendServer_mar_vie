@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import {Token} from '../class/token';
 import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
+import usuarios from '../controllers/usuarios';
 
 
 
@@ -129,6 +130,20 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
     })
    
 })
+
+
+// userRoutes.get('/' , verificarToken, (req:any, res:Response)=>{
+
+//     const usuario = req.usuario;
+
+//     res.json({
+//         estado:"success",
+//         mensaje: usuario
+//     })
+
+// })
+
+userRoutes.get('/', verificarToken, usuarios.token)
 
 
 

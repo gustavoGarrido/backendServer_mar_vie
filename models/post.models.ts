@@ -8,9 +8,11 @@ const postShema = new Schema({
     mensaje:{
         type:String
     },
-    img:{
-        type:String
-    },
+    img:[
+        {
+            type:String
+        }
+    ],
     coords:{
         type: String
     },

@@ -28,7 +28,7 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
                 data:postDb
             });
         })
-        .catch(error =>console.log("error"))
+        .catch(error =>console.log(error))
 });
 
 postRouter.get('/', async (req:any, res:Response)=>{
@@ -53,36 +53,48 @@ postRouter.get('/', async (req:any, res:Response)=>{
 
 })
 
-postRouter.post('/upload', verificarToken, (req:any, res:Response)=>{
+postRouter.post('/upload', verificarToken, async (req:any, res:Response)=>{
 
-    // const imag:IfileUpload = req.files.imag
+    const imag:IfileUpload = req.files.imag
 
-    console.log(req.files)
-
-    // if(!req.files){
-    //     return res.status(400).json({
-    //         estado:"error",
-    //         mensaje: "no se subio archivo"
-    //     })
-    // }
+    if(!req.files){
+        return res.status(400).json({
+            estado:"error",
+            mensaje: "no se subio archivo"
+        })
+    }
  
-    // const validacionTipoImagen = imag.mimetype.includes('image');
+    const validacionTipoImagen = imag.mimetype.includes('image');
 
-    // if(!validacionTipoImagen){
-    //     return res.status(400).json({
-    //         estado:"error",
-    //         mensaje: "formato incorrecto"
-    //     })
-    // }
+    if(!validacionTipoImagen){
+        return res.status(400).json({
+            estado:"error",
+            mensaje: "formato incorrecto"
+        })
+    }
 
-    // await fileSystem.guardarImagenTemporal(req.usuario.id, imag)
+    await fileSystem.guardarImagenTemporal(req.usuario.id, imag)
 
    
-    // res.json({
-    //     estado:"success",
-    //     data: imag
-    // })
+    res.json({
+        estado:"success",
+        data: imag
+    })
 
 })
+
+
+postRouter.get('/imagen/:userId/:img', (req:any, res:Response)=>{
+    
+    const userId = req.params.userId;
+    const img = req.params.img;
+
+    const foto = fileSystem.getFotoUrl(userId, img);
+
+    res.sendFile(foto);
+
+})
+
+
 
 export default postRouter;

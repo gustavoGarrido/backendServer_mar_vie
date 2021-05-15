@@ -6,6 +6,11 @@ import bodyPaser from 'body-parser';
 import userSQLRoutes from './routes/userSQL';
 import postRouter from './routes/post';
 import fileUpload from 'express-fileupload';
+import FileSystem from './class/file-system';
+
+
+
+
 
 
 //Creando servidor web
@@ -17,6 +22,8 @@ server.start(()=>{
 
 
 //upload
+const crearFolder = new FileSystem();
+crearFolder.createCarpetaUploads();
 server.app.use(fileUpload());
 
 // body parser

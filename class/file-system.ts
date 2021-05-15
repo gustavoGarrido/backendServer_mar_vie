@@ -78,4 +78,23 @@ export default class FileSystem{
         return imagenesTemp;
     }
 
+    getFotoUrl(userId:string, img:string):string{
+
+        const pathFoto:string = path.resolve(__dirname, '../uploads', userId, "post", img);
+        if(fs.existsSync(pathFoto)){
+            return pathFoto
+        }
+        else{
+            return path.resolve(__dirname, '../assets/imagen_default.jpg')
+        }
+    }
+
+    createCarpetaUploads():void{
+        const pathUploads = path.resolve(__dirname, 'uploads');
+
+        if(!fs.existsSync(pathUploads)){
+            fs.mkdirSync(pathUploads);
+        }
+    }
+
 }
