@@ -18,17 +18,18 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
 
     body.img = imagenes;
 
-    Post.create(body)
-        .then(async postDb=>{
 
-            await postDb.populate('usuario').execPopulate()
+    // Post.create(body)
+    //     .then(async postDb=>{
+
+    //         await postDb.populate('usuario').execPopulate()
         
-            res.json({
-                estado:"success",
-                data:postDb
-            });
-        })
-        .catch(error =>console.log(error))
+    //         res.json({
+    //             estado:"success",
+    //             data:postDb
+    //         });
+    //     })
+    //     .catch(error =>console.log(error))
 });
 
 postRouter.get('/', async (req:any, res:Response)=>{

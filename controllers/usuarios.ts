@@ -1,14 +1,19 @@
 import {Router, Request, Response} from 'express';
+import { IrequestExpress } from '../interfaces/requetsExpress';
+
 
 export = {
     token: (req:any, res:Response, next:any)=>{
-        const usuario = req.usuario;
+        
+        const request: IrequestExpress = req;
+        
+        const usuario = request.usuario.id;
+
+        console.log("request", req)
 
         res.json({
             estado:"success",
             mensaje: usuario
         })
-
-        next()
     }
 }
