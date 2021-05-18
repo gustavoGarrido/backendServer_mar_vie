@@ -5,6 +5,7 @@ import {Token} from '../class/token';
 import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
 import usuarios from '../controllers/usuarios';
+import emailClass from '../class/email'
 
 
 
@@ -132,18 +133,24 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
 })
 
 
-// userRoutes.get('/' , verificarToken, (req:any, res:Response)=>{
+userRoutes.get('/' , verificarToken, async (req:any, res:Response)=>{
 
-//     const usuario = req.usuario;
+    const usuario = req.usuario;
 
-//     res.json({
-//         estado:"success",
-//         mensaje: usuario
-//     })
+    const email = new emailClass();
 
-// })
+    const emailInfo = await email.enviarEmail("ingindustrial.gu", "envio_email", "",
+        "<h1> cuerpo email </h1>"
+    )
 
-userRoutes.get('/', verificarToken, usuarios.token)
+    res.json({
+        estado:"success",
+        mensaje: usuario,
+        emailInfo: emailInfo
+    })
+})
+
+// userRoutes.get('/', verificarToken, usuarios.token)
 
 
 
