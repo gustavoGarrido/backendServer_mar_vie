@@ -2,7 +2,7 @@ import {Schema, model, Document} from 'mongoose';
 import bcrypt from 'bcrypt';
 
 
-const usuarioSchema = new Schema({
+const usuarioSchema = new Schema<Iusuario>({
 
     nombre:{
         type:String,
@@ -25,8 +25,6 @@ const usuarioSchema = new Schema({
 });
 
 usuarioSchema.method('compararPassword', function(password:string = ""):boolean{
-
-    //@ts-ignore
     if(bcrypt.compareSync(password, this.password)){
         return true
     }

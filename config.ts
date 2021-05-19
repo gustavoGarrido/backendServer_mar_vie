@@ -6,9 +6,10 @@ dotenv.config({
 });
 
 let variables_entorno = {
-    NODE_ENV: process.env.NODE_ENV || 'develoment',
-    HOST: process.env.NODE_HOST || 'localhost',
-    PORT: process.env.PORT || 3000
+    NODE_ENV: process.env.NODE_ENV || 'development',
+    HOST: process.env.HOST || 'localhost',
+    PORT: process.env.PORT || 3000,
+    DB_MYSQL: process.env.DB_MYSQL || 'crm_reclamos_v2'
 }
 
 export default variables_entorno;

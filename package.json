@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"set NODE_ENV=development&& node dist",
-    "prd": "set NODE_ENV=production&& node dist"
+    "dev":"set NODE_ENV=development&&tsc&& nodemon node dist",
+    "prd": "set NODE_ENV=production&&tsc&& nodemon node dist"
   },
   "author": "\"Gustavo G\"",
   "license": "ISC",

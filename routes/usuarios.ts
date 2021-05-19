@@ -56,7 +56,7 @@ userRoutes.post('/login', (req:Request, res:Response)=>{
 
 })
 
-userRoutes.post('/create', (req:Request, res:Response)=>{
+userRoutes.post('/create', async (req:Request, res:Response)=>{
 
     const user = {
         nombre: req.body.nombre,
@@ -65,19 +65,35 @@ userRoutes.post('/create', (req:Request, res:Response)=>{
         avatar: req.body.avatar
     }
 
-    Usuario.create(user)
-        .then(result=>{
-            res.json({
-                estado:"success",
-                mensaje: result 
-            })
-        })
-        .catch(error=>{
-            res.json({
-                estado: "error",
-                mensaje: error
-            })
-        })
+    const emailEnvio = new emailClass()
+
+    const result = await Usuario.create(user);
+    const envio = await emailEnvio.enviarEmail(user.email, "Creacion cuenta", "Su cuenta se ha creado con exito", "");
+
+    res.json({
+        estado:"success",
+        mensaje: result, 
+        emailResult: envio
+    })
+
+    // Usuario.create(user)
+    //     .then(async result=>{
+
+    //         const emailEnvio = new emailClass()
+
+    //         await emailEnvio.enviarEmail(req.body.email,"Creacion cuenta", "Su cuenta se ha creado con exito", "")
+
+    //         res.json({
+    //             estado:"success",
+    //             mensaje: result 
+    //         })
+    //     })
+    //     .catch(error=>{
+    //         res.json({
+    //             estado: "error",
+    //             mensaje: error
+    //         })
+    //     })
 
 })
 
