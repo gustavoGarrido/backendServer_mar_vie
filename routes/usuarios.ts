@@ -153,16 +153,16 @@ userRoutes.get('/' , verificarToken, async (req:any, res:Response)=>{
 
     const usuario = req.usuario;
 
-    const email = new emailClass();
+    // const email = new emailClass();
 
-    const emailInfo = await email.enviarEmail("ingindustrial.gu", "envio_email", "",
-        "<h1> cuerpo email </h1>"
-    )
+    // const emailInfo = await email.enviarEmail("ingindustrial.gu", "envio_email", "",
+    //     "<h1> cuerpo email </h1>"
+    // )
 
     res.json({
         estado:"success",
         mensaje: usuario,
-        emailInfo: emailInfo
+        // emailInfo: emailInfo
     })
 })
 

@@ -7,6 +7,7 @@ import userSQLRoutes from './routes/userSQL';
 import postRouter from './routes/post';
 import fileUpload from 'express-fileupload';
 import FileSystem from './class/file-system';
+import cors from 'cors';
 
 
 //Creando servidor web
@@ -26,6 +27,8 @@ server.app.use(fileUpload());
 server.app.use(bodyPaser.urlencoded({extended:true}));
 server.app.use(bodyPaser.json());
 
+//Cors
+server.app.use(cors());
 
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
