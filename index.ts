@@ -8,7 +8,7 @@ import postRouter from './routes/post';
 import fileUpload from 'express-fileupload';
 import FileSystem from './class/file-system';
 import cors from 'cors';
-
+import express from 'express';
 
 //Creando servidor web
 const server = new Server();
@@ -24,12 +24,11 @@ crearFolder.createCarpetaUploads();
 server.app.use(fileUpload());
 
 // body parser
-server.app.use(bodyPaser.urlencoded({extended:true}));
-server.app.use(bodyPaser.json());
+server.app.use(express.urlencoded({ extended: false })); // express.urlencoded({ extended: false })
+server.app.use(express.json()); //express.json()
 
 //Cors
 server.app.use(cors());
-
 //Rutas aplicacion
 server.app.use('/users', userRoutes);
 server.app.use('/userSQL', userSQLRoutes);
@@ -58,3 +57,6 @@ mongoose.connect('mongodb://localhost:27017/appCurso_mar_vie',
                     }
 
 )
+
+
+

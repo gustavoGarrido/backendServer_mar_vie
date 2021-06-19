@@ -1,4 +1,4 @@
-import {Router, Response, Request} from 'express';
+import { Router, Response, Request, request } from 'express';
 import Usuario from '../models/usuarios.model';
 import bcrypt from 'bcrypt';
 import {Token} from '../class/token';
@@ -6,6 +6,7 @@ import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
 import usuarios from '../controllers/usuarios';
 import emailClass from '../class/email'
+import IrepBackend from '../../frontend/claseMarVier/src/app/interfaces/IrespBackend';
 
 
 
@@ -97,6 +98,19 @@ userRoutes.post('/create', async (req:Request, res:Response)=>{
 
 })
 
+userRoutes.get('/consultarUsuario', verificarToken, async (req:any, res:Response)=>{
+    const id_usuario = req.usuario
+
+    const usuario = await Usuario.findById({_id: id_usuario.id}, (error:any, doc:any)=>{
+        console.log(doc)
+    });
+
+    res.json({
+        estado:"success",
+        data: usuario
+    })
+})
+
 userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
    
     // const user = {
@@ -152,6 +166,13 @@ userRoutes.put('/update', verificarToken, (req:any, res:Response)=>{
 userRoutes.get('/' , verificarToken, async (req:any, res:Response)=>{
 
     const usuario = req.usuario;
+
+    const request:IrepBackend = req;
+
+    console.log("ingresa")
+
+    console.log(req.headers)
+
 
     // const email = new emailClass();
 

@@ -32,7 +32,7 @@ postRouter.post('/', verificarToken, (req:any, res:Response)=>{
     //     .catch(error =>console.log(error))
 });
 
-postRouter.get('/', async (req:any, res:Response)=>{
+postRouter.get('/', verificarToken, async (req:any, res:Response)=>{
 
     let pagina = Number(req.query.pagina) || 1;
     let ctd = Number(req.query.ctd)
