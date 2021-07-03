@@ -1,0 +1,14 @@
+{
+    "apps" : [
+        {
+            "name"        : "claseMarVier",
+            "script"      : "./dist/index.js",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "env_production":{
+                "NODE_ENV": "production"
+            }
+        }
+    ]
+}

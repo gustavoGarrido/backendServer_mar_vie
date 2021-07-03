@@ -9,6 +9,8 @@ import fileUpload from 'express-fileupload';
 import FileSystem from './class/file-system';
 import cors from 'cors';
 import express from 'express';
+import expressRate from 'express-rate-limit';
+import mlRouter from './routes/mercadoLibre';
 
 //Creando servidor web
 const server = new Server();
@@ -17,6 +19,18 @@ server.start(()=>{
     console.log(`Servidor corriendo en puerto ${server.puerto} y en host ${server.host}`);
 });
 
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+// app.set('trust proxy', 1);
+
+const limiter = expressRate({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "ha superado el numero de peticiones"
+  });
+  
+  //  apply to all requests
+  server.app.use(limiter);
 
 //upload
 const crearFolder = new FileSystem();
@@ -33,6 +47,7 @@ server.app.use(cors());
 server.app.use('/users', userRoutes);
 server.app.use('/userSQL', userSQLRoutes);
 server.app.use('/post', postRouter);
+server.app.use('/pagar', mlRouter)
 
 //Conexión dataBase MySQL
 connection.connect((error)=>{

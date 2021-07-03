@@ -6,7 +6,7 @@ import { verificarToken } from '../middlewares/authentication';
 import jwt from 'jsonwebtoken';
 import usuarios from '../controllers/usuarios';
 import emailClass from '../class/email'
-import IrepBackend from '../../frontend/claseMarVier/src/app/interfaces/IrespBackend';
+import { IrequestExpress } from '../interfaces/requetsExpress';
 
 
 
@@ -15,7 +15,6 @@ const userRoutes = Router();
 
 
 userRoutes.post('/login', (req:Request, res:Response)=>{
-
 
     Usuario.findOne({email: req.body.email} ,null, null, (error, result)=>{
         if(error){
@@ -167,7 +166,7 @@ userRoutes.get('/' , verificarToken, async (req:any, res:Response)=>{
 
     const usuario = req.usuario;
 
-    const request:IrepBackend = req;
+    const request:IrequestExpress = req;
 
     console.log("ingresa")
 
